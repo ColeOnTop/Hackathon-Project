@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="A feature-rich document editor with text formatting, spell checking, and file operations">
+    <title>Document Editor</title>
+    <link rel="stylesheet" href="document-styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="logo" role="banner">Document Editor</div>
+            <div class="file-operations" role="toolbar" aria-label="File operations">
+                <button id="new-doc" aria-label="New document">New</button>
+                <button id="open-doc" aria-label="Open document">Open</button>
+                <button id="save-doc" aria-label="Save document">Save</button>
+                <button id="print-doc" aria-label="Print document">Print</button>
+                <input type="file" id="file-input" style="display: none;" accept=".html" aria-label="Select file to open">
+            </div>
+        </header>
+        
+        <div class="toolbar" role="toolbar" aria-label="Formatting tools">
+            <div class="toolbar-section">
+                <select id="font-family" aria-label="Font family">
+                    <option value="Arial">Arial</option>
+                    <option value="Helvetica">Helvetica</option>
+                    <option value="Times New Roman">Times New Roman</option>
+                    <option value="Courier New">Courier New</option>
+                    <option value="Verdana">Verdana</option>
+                    <option value="Georgia">Georgia</option>
+                </select>
+                
+                <select id="font-size" aria-label="Font size">
+                    <option value="1">8pt</option>
+                    <option value="2">10pt</option>
+                    <option value="3">12pt</option>
+                    <option value="4">14pt</option>
+                    <option value="5">18pt</option>
+                    <option value="6">24pt</option>
+                    <option value="7">36pt</option>
+                </select>
+            </div>
+            
+            <div class="toolbar-section">
+                <button id="spell-check" title="Toggle Spell Check" aria-label="Toggle spell check" aria-pressed="false"><i class="fas fa-spell-check" aria-hidden="true"></i></button>
+            </div>
+            
+            <div class="toolbar-section">
+                <button id="bold" title="Bold" aria-label="Bold text" aria-pressed="false"><i class="fas fa-bold" aria-hidden="true"></i></button>
+                <button id="italic" title="Italic" aria-label="Italic text" aria-pressed="false"><i class="fas fa-italic" aria-hidden="true"></i></button>
+                <button id="underline" title="Underline" aria-label="Underline text" aria-pressed="false"><i class="fas fa-underline" aria-hidden="true"></i></button>
+                <button id="strikethrough" title="Strikethrough" aria-label="Strikethrough text" aria-pressed="false"><i class="fas fa-strikethrough" aria-hidden="true"></i></button>
+            </div>
+            
+            <div class="toolbar-section">
+                <button id="align-left" title="Align Left" aria-label="Align text left"><i class="fas fa-align-left" aria-hidden="true"></i></button>
+                <button id="align-center" title="Align Center" aria-label="Align text center"><i class="fas fa-align-center" aria-hidden="true"></i></button>
+                <button id="align-right" title="Align Right" aria-label="Align text right"><i class="fas fa-align-right" aria-hidden="true"></i></button>
+                <button id="align-justify" title="Justify" aria-label="Justify text"><i class="fas fa-align-justify" aria-hidden="true"></i></button>
+            </div>
+            
+            <div class="toolbar-section">
+                <button id="ordered-list" title="Ordered List" aria-label="Create ordered list"><i class="fas fa-list-ol" aria-hidden="true"></i></button>
+                <button id="unordered-list" title="Unordered List" aria-label="Create unordered list"><i class="fas fa-list-ul" aria-hidden="true"></i></button>
+                <button id="indent" title="Indent" aria-label="Indent text"><i class="fas fa-indent" aria-hidden="true"></i></button>
+                <button id="outdent" title="Outdent" aria-label="Outdent text"><i class="fas fa-outdent" aria-hidden="true"></i></button>
+            </div>
+            
+            <div class="toolbar-section">
+                <input type="color" id="font-color" title="Font Color" aria-label="Change font color">
+                <input type="color" id="highlight-color" title="Highlight Color" aria-label="Change highlight color">
+            </div>
+            
+            <div class="toolbar-section">
+                <button id="insert-link" title="Insert Link" aria-label="Insert link"><i class="fas fa-link" aria-hidden="true"></i></button>
+                <button id="insert-image" title="Insert Image" aria-label="Insert image"><i class="fas fa-image" aria-hidden="true"></i></button>
+                <button id="insert-table" title="Insert Table" aria-label="Insert table"><i class="fas fa-table" aria-hidden="true"></i></button>
+            </div>
+        </div>
+        
+        <main class="editor-container">
+            <div id="editor" contenteditable="true" role="textbox" aria-multiline="true" aria-label="Document content" spellcheck="false"></div>
+        </main>
+        
+        <footer class="status-bar">
+            <div id="word-count" aria-live="polite">Words: 0</div>
+            <div id="char-count" aria-live="polite">Characters: 0</div>
+        </footer>
+    </div>
+    
+    <!-- Link Modal -->
+    <div id="link-modal" class="modal" role="dialog" aria-labelledby="link-modal-title" aria-hidden="true">
+        <div class="modal-content">
+            <span class="close" aria-label="Close">&times;</span>
+            <h2 id="link-modal-title">Insert Link</h2>
+            <div class="form-group">
+                <label for="link-url">URL:</label>
+                <input type="text" id="link-url" placeholder="https://example.com" aria-required="true">
+            </div>
+            <div class="form-group">
+                <label for="link-text">Text:</label>
+                <input type="text" id="link-text" placeholder="Link text" aria-required="true">
+            </div>
+            <button id="insert-link-btn" aria-label="Insert link">Insert</button>
+        </div>
+    </div>
+    
+    <!-- Table Modal -->
+    <div id="table-modal" class="modal" role="dialog" aria-labelledby="table-modal-title" aria-hidden="true">
+        <div class="modal-content">
+            <span class="close" aria-label="Close">&times;</span>
+            <h2 id="table-modal-title">Insert Table</h2>
+            <div class="form-group">
+                <label for="table-rows">Rows:</label>
+                <input type="number" id="table-rows" min="1" max="10" value="3" aria-required="true">
+            </div>
+            <div class="form-group">
+                <label for="table-cols">Columns:</label>
+                <input type="number" id="table-cols" min="1" max="10" value="3" aria-required="true">
+            </div>
+            <div class="form-group">
+                <label for="table-header">Include Header Row:</label>
+                <input type="checkbox" id="table-header" checked aria-label="Include header row in table">
+            </div>
+            <button id="insert-table-btn" aria-label="Insert table">Insert</button>
+        </div>
+    </div>
+    
+    <script src="document-editor.js"></script>
+</body>
+</html>
