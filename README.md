@@ -18,7 +18,7 @@ I'm *Collins Owino*, a tech lover passionate about building, problem-solving and
 
 ## 🌐 Live Site
 
-> [https://coleontop.github.io/Hackathon-Project/](#) - Hosted version.
+> [View Hosted Portfolio](https://coleontop.github.io/Hackathon-Project/)
 
 
 ## 🛠 Tech Stack
